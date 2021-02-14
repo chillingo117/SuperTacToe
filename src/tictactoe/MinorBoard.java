@@ -3,11 +3,11 @@ package tictactoe;
 import java.util.Arrays;
 
 /**
- * A MinorTacBoard is an instance of the more common 3x3 simple tic tac toe game.
+ * A MinorBoard is an instance of the common 3x3 simple tic tac toe game.
  *
  */
 
-public class MinorTacBoard {
+public class MinorBoard {
 	
 	private String winner = " ";
 	private boolean finished = false;

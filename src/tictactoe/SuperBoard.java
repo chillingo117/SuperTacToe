@@ -2,21 +2,21 @@ package tictactoe;
 
 import java.util.Arrays;
 
-import tictactoe.MinorTacBoard;
+import tictactoe.MinorBoard;
 
-public class SuperTacBoard {
-	private MinorTacBoard[] row2 = {new MinorTacBoard(), new MinorTacBoard(), new MinorTacBoard()};
-	private MinorTacBoard[] row1 = {new MinorTacBoard(), new MinorTacBoard(), new MinorTacBoard()};
-	private MinorTacBoard[] row0 = {new MinorTacBoard(), new MinorTacBoard(), new MinorTacBoard()};
+public class SuperBoard {
+	private MinorBoard[] row2 = {new MinorBoard(), new MinorBoard(), new MinorBoard()};
+	private MinorBoard[] row1 = {new MinorBoard(), new MinorBoard(), new MinorBoard()};
+	private MinorBoard[] row0 = {new MinorBoard(), new MinorBoard(), new MinorBoard()};
 	
-	private MinorTacBoard[][] board = {row0, row1, row2}; // Bind all rows to form the minor tictactoe game
+	private MinorBoard[][] board = {row0, row1, row2}; // Bind all rows to form the minor tictactoe game
 
 	/**
 	 * returns the state of the super board as a copy
 	 * @return a copy of the superBoard state
 	 */
-	public MinorTacBoard[][] getSuperBoard () {
-		MinorTacBoard[][] boardCopy = Arrays.copyOf(board, 3); 
+	public MinorBoard[][] getSuperBoard () {
+		MinorBoard[][] boardCopy = Arrays.copyOf(board, 3); 
 		return boardCopy;
 	}
 	
@@ -24,7 +24,7 @@ public class SuperTacBoard {
 	 * Returns the board as nested array of minorBoards.
 	 * @return the board as a nested array of minorBoards.
 	 */
-	public MinorTacBoard[][] getTrueBoard() {
+	public MinorBoard[][] getTrueBoard() {
 		return board;
 	}
 
@@ -35,7 +35,7 @@ public class SuperTacBoard {
 	 * @param y coord of the chosen minor board
 	 * @return the state of the chosen minor board
 	 */
-	public MinorTacBoard getMinorBoard (int x, int y) {
+	public MinorBoard getMinorBoard (int x, int y) {
 		return board[y][x];
 	}
 	
@@ -66,7 +66,7 @@ public class SuperTacBoard {
 		// Check if mark has completed a row
 		boolean win = true;
 		for (int row = 0; row < 3; row++) {
-			MinorTacBoard toCheck = board[currentMinorBoard[1]][row];
+			MinorBoard toCheck = board[currentMinorBoard[1]][row];
 			if (!toCheck.getWinner().equals(player)) {
 				win = false;
 			}
