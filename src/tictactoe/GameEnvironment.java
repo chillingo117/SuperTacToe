@@ -46,8 +46,7 @@ public class GameEnvironment {
 		oIsAi = input.askForAi("O");
 		if (oIsAi) {
 			String chosenAi = input.selectAi();
-			aiX = summonAi(chosenAi, env);
-
+			aiO = summonAi(chosenAi, env);
 		}
 		//Until the game is finished, keep prompting turns to be made
 		while (!finish) {
