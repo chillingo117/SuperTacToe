@@ -1,6 +1,6 @@
 package tictactoe;
 
-public class Main {
+public class MainClass {
 	
 	/**
 	 * main function that starts and ends the game
