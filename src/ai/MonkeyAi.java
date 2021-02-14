@@ -1,9 +1,12 @@
 package ai;
 
+import java.util.Random;
+
 import tictactoe.GameEnvironment;
 
 public class MonkeyAi extends Ai{
 	private GameEnvironment env;
+	private Random randomiser = new Random();
 	
 	public MonkeyAi(GameEnvironment gameEnv) {
 		env = gameEnv;
@@ -11,16 +14,16 @@ public class MonkeyAi extends Ai{
 
 	@Override
 	public int[] takeTurn() {
-		int x = (int) (Math.random() * (3));
-		int y = (int) (Math.random() * (3));
+		int x = randomiser.nextInt() * (3);
+		int y = randomiser.nextInt() * (3);
 
 		System.out.print("Monkey tried:");
 		System.out.printf(" (%d,%d)", x, y);
 
-		while(!env.checkMinorCoords(x, y)) {
+		while(!env.minorIsEmpty(x, y)) {
 			System.out.printf(" (%d,%d)", x, y);
-			x = (int) (Math.random() * (3));
-			y = (int) (Math.random() * (3));
+			x = randomiser.nextInt() * (3);
+			y = randomiser.nextInt() * (3);
 		}
 		int[] coords = {x, y};
 		System.out.println();
@@ -29,14 +32,14 @@ public class MonkeyAi extends Ai{
 
 	@Override
 	public int[] aiChooseBoard() {
-		int x = (int) (Math.random() * (3));
-		int y = (int) (Math.random() * (3));
+		int x = randomiser.nextInt() * (3);
+		int y = randomiser.nextInt() * (3);
 
-		while(!env.checkSuperCoords(x, y)) {
+		while(!env.superIsEmpty(x, y)) {
 			System.out.printf("%d,%d", x, y);
 
-			x = (int) (Math.random() * (3));
-			y = (int) (Math.random() * (3));
+			x = randomiser.nextInt() * (3);
+			y = randomiser.nextInt() * (3);
 		}
 		int[] coords = {x, y};
 		return coords;

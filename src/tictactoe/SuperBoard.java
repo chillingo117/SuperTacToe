@@ -2,8 +2,6 @@ package tictactoe;
 
 import java.util.Arrays;
 
-import tictactoe.MinorBoard;
-
 public class SuperBoard {
 	private MinorBoard[] row2 = {new MinorBoard(), new MinorBoard(), new MinorBoard()};
 	private MinorBoard[] row1 = {new MinorBoard(), new MinorBoard(), new MinorBoard()};
@@ -85,8 +83,7 @@ public class SuperBoard {
 		if (win) {
 			return true;
 		}
-		
-		win = true;
+	
 		
 		// Check if mark has completed a diagonal
 		String center = board[1][1].getWinner();
@@ -96,16 +93,7 @@ public class SuperBoard {
 		String botLeft = board[0][0].getWinner();
 		String botRight = board[0][2].getWinner();
 
-		if(center.equals(player)) {
-			if((topLeft.equals(center) && center.equals(botRight)) || (botLeft.equals(center) && center.equals(topRight))) {
-				return true;
-			}
-		}
-
-
-		// if we reach here, then noone has won yet 
-		return false;
-	
+		return(center.equals(player) && ((topLeft.equals(center) && center.equals(botRight)) || (botLeft.equals(center) && center.equals(topRight))));
 	}
 	
 }

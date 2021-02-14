@@ -1,6 +1,7 @@
 package ai;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import tictactoe.GameEnvironment;
 
@@ -12,6 +13,7 @@ import tictactoe.GameEnvironment;
  */
 public class FasterMonkeyAi extends Ai{
 	private GameEnvironment env;
+	private Random randomiser = new Random();
 	
 	//Monkey ai is constructed with a GameEnvironment as an input. 
 	public FasterMonkeyAi(GameEnvironment gameEnv) {
@@ -27,18 +29,18 @@ public class FasterMonkeyAi extends Ai{
 	public int[] takeTurn() {
 		ArrayList<int[]> tried = new ArrayList<int[]>();
 		
-		int x = (int) (Math.random() * (3));
-		int y = (int) (Math.random() * (3));
+		int x = randomiser.nextInt(3);
+		int y = randomiser.nextInt(3);
 		int[] pair = {x, y};
 		tried.add(pair);
 
 		System.out.print("Monkey tried:");
 		System.out.printf(" (%d,%d)", x, y);
 
-		while(!env.checkMinorCoords(x, y)) {
+		while(!env.minorIsEmpty(x, y)) {
 			while (tried.contains(pair)) {
-				x = (int) (Math.random() * (3));
-				y = (int) (Math.random() * (3));
+				x = randomiser.nextInt() * (3);
+				y = randomiser.nextInt() * (3);
 			}
 
 			System.out.printf(" (%d,%d)", x, y);
@@ -55,14 +57,14 @@ public class FasterMonkeyAi extends Ai{
 	 */
 	@Override
 	public int[] aiChooseBoard() {
-		int x = (int) (Math.random() * (3));
-		int y = (int) (Math.random() * (3));
+		int x = randomiser.nextInt() * (3);
+		int y = randomiser.nextInt() * (3);
 
-		while(!env.checkSuperCoords(x, y)) {
+		while(!env.superIsEmpty(x, y)) {
 			System.out.printf("%d,%d", x, y);
 
-			x = (int) (Math.random() * (3));
-			y = (int) (Math.random() * (3));
+			x = randomiser.nextInt() * (3);
+			y = randomiser.nextInt() * (3);
 		}
 		int[] coords = {x, y};
 		return coords;

@@ -1,11 +1,5 @@
 package tictactoe;
 
-
-import tictactoe.Inputs;
-import tictactoe.BoardPrinter;
-import tictactoe.SuperBoard;
-
-
 import ai.*;
 /**
  * Contains the main function which initiates the game. 
@@ -16,47 +10,40 @@ import ai.*;
 public class GameEnvironment {
 
 
-	private static boolean finish = false; //Whether the game has finished or not
-	private static String winner = " "; //Until someone wins, the winner is " "
-	private static Inputs input = new Inputs(); //init the inputs object
-	private static SuperBoard board = new SuperBoard(); //init the superBoard
-	private static BoardPrinter printer = new BoardPrinter(); //init the printer
-	private static String currentPlayer = "X"; //Sets the current player as X, X always goes first
-	private static int[] currentMinorBoard = {1, 1}; //inits the starting board as the center board
+	private boolean finish = false; //Whether the game has finished or not
+	private String winner = " "; //Until someone wins, the winner is " "
+	private Inputs input = new Inputs(); //init the inputs object
+	private SuperBoard board = new SuperBoard(); //init the superBoard
+	private BoardPrinter printer = new BoardPrinter(); //init the printer
+	private String currentPlayer = "X"; //Sets the current player as X, X always goes first
+	private int[] currentMinorBoard = {1, 1}; //inits the starting board as the center board
 	
-	private static boolean xIsAi = false; //bool for if X is an AI
-	private static boolean oIsAi = false; //bool for if O is an AI
-	private static Ai aiX; //the X AI
-	private static Ai aiO; //the O AI
+	private boolean xIsAi = false; //bool for if X is an AI
+	private boolean oIsAi = false; //bool for if O is an AI
+	private Ai aiX; //the X AI
+	private Ai aiO; //the O AI
+
+	public boolean isFinished(){
+		return finish;
+	}
 	
 	/**
-	 * main function that starts and ends the game
-	 * @param args
+	 * Sets up the game environment prior to beginning game.
 	 */
-	public static void main(String[] args) {
-		//Creates new game environment and waits for it be finished, then generates win message
-		GameEnvironment env = new GameEnvironment();
-		
+	public void setup(){
 		//Ask user to setup X and O's status as AI and what AI
 		xIsAi = input.askForAi("X");
 		if (xIsAi) {
 			String chosenAi = input.selectAi();
-			aiX = summonAi(chosenAi, env);
+			aiX = summonAi(chosenAi, this);
 		}
 		oIsAi = input.askForAi("O");
 		if (oIsAi) {
 			String chosenAi = input.selectAi();
-			aiO = summonAi(chosenAi, env);
+			aiO = summonAi(chosenAi, this);
 		}
-		//Until the game is finished, keep prompting turns to be made
-		while (!finish) {
-			env.turn();
-		}
-		// Once the game is finished, print the final board status and winner
-		printer.printBoard(board);
-		System.out.printf("%s is the winner!", winner);
 	}
-	
+
 	/**
 	 * Returns an AI 
 	 * @param aiCode A string that determines the type of AI created
@@ -85,28 +72,21 @@ public class GameEnvironment {
 	 * @param y
 	 * @return true if the coordinates are empty
 	 */
-	public boolean checkMinorCoords(int x, int y) {
+	public boolean minorIsEmpty(int x, int y) {
 		String[][] openMinBoard = getCurrentMinorBoard().getBoard();
-		if (openMinBoard[y][x] != " ") {
-			return false;
-		} else {
-			return true;
-		}
+		boolean empty = openMinBoard[y][x].equals(" ");
+		return (empty);
 	}
 	
 	/**
 	 * Checks if a pair of coordinates is valid for choosing a new board
 	 * @param x 
 	 * @param y
-	 * @return true if the minor tac board hasn't been won
+	 * @return true if the minor board hasn't finished
 	 */
-	public boolean checkSuperCoords(int x, int y) {
+	public boolean superIsEmpty(int x, int y) {
 		MinorBoard minorBoard = board.getMinorBoard(x, y);
-		if (minorBoard.isFinished()) {
-			return false;
-		} else {
-			return true;
-		}
+		return !minorBoard.isFinished();
 	}
 	
 	/**
@@ -115,7 +95,7 @@ public class GameEnvironment {
 	private void playerChooseBoard() {
 		int[] boardCoords = input.getCoordInput("Input coordinates to choose next board");
 		
-		while(!checkSuperCoords(boardCoords[0], boardCoords[1])) {
+		while(!superIsEmpty(boardCoords[0], boardCoords[1])) {
 			boardCoords = input.getCoordInput("Board is finished, choose another");
 		}
 		currentMinorBoard[0] = boardCoords[0];
@@ -158,7 +138,7 @@ public class GameEnvironment {
 		int[] coords = input.getCoordInput("Player %s, input coordinates to place your mark", currentPlayer);
 
 		
-		while(!checkMinorCoords(coords[0], coords[1])) {
+		while(!minorIsEmpty(coords[0], coords[1])) {
 			coords = input.getCoordInput("Invalid coordinates, coords already marked");
 		}
 		return coords;
@@ -177,9 +157,36 @@ public class GameEnvironment {
 	}
 	
 	/**
+	 * Called when the game ends.
+	 * It prints the board one final time, and displays a message stating the winner.
+	 */
+	private void gameFinish(){
+		finish = true;
+		printer.printBoard(board);
+		//USE LOGGER
+		System.out.printf("%s is the winner!", winner);
+	}
+
+	/**
+	 * Called when a minor board has been won. 
+	 * It checks to see if the currentPlayer, by winning the minor board, has won the overall game.
+	 * If not, this function prompts the NEXT player to choose a new board.
+	 */
+	private void minorHasBeenWon(){
+		if(board.checkWin(currentPlayer, currentMinorBoard)) {
+			gameFinish();
+			winner = getCurrentMinorBoard().getWinner();
+		} else if (board.checkFull()) {
+			gameFinish();
+			winner = "Noone";
+		} else {
+			chooseNewBoard();
+		}
+	}
+	/**
 	 * processes a single game turn
 	 */
-	private void turn() {
+	public void turn() {
 		// Begin by printing the board
 		printer.printBoard(board);
 
@@ -202,22 +209,15 @@ public class GameEnvironment {
 
 		/*
 		 *  If the minorBoard is finished, check if a player has won the game.
-		 *  Otherwise prompt the NEXT player to choose a new board.
+		 *  Else...
 		 */
 		if (getCurrentMinorBoard().isFinished()) {
 			printer.printBoard(board);
-			if(board.checkWin(currentPlayer, currentMinorBoard)) {
-				finish = true;
-				winner = getCurrentMinorBoard().getWinner();
-			} else if (board.checkFull()) {
-				finish = true;
-				winner = "Noone";
-			} else {
-				chooseNewBoard();
-			}
+			minorHasBeenWon();
 		} else {
-
-			if(!checkSuperCoords(coords[0], coords[1])) {
+			//Else check if the new board is empty, otherwise prompt NEXT player to 
+			// choose a new board.
+			if(!superIsEmpty(coords[0], coords[1])) {
 				chooseNewBoard();
 			} else {
 				currentMinorBoard[0] = coords[0];
