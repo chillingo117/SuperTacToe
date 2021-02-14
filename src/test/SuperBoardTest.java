@@ -6,17 +6,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 //import tictactoe.BoardPrinter;
-import tictactoe.SuperTacBoard;
+import tictactoe.SuperBoard;
 
 class SuperBoardTest {
 	
-	private SuperTacBoard testBoard;
+	private SuperBoard testBoard;
 	//private BoardPrinter printer;
 	@BeforeEach
 	public void initialise()
 	{
 		//printer = new BoardPrinter();
-		testBoard = new SuperTacBoard();
+		testBoard = new SuperBoard();
 		String[] row2 = {"X","O","X"};
 		String[] row1 = {"X","O","O"};
 		String[] row0 = {" ","X","X"};

@@ -3,7 +3,7 @@ package tictactoe;
 
 import tictactoe.Inputs;
 import tictactoe.BoardPrinter;
-import tictactoe.SuperTacBoard;
+import tictactoe.SuperBoard;
 
 
 import ai.*;
@@ -19,7 +19,7 @@ public class GameEnvironment {
 	private static boolean finish = false; //Whether the game has finished or not
 	private static String winner = " "; //Until someone wins, the winner is " "
 	private static Inputs input = new Inputs(); //init the inputs object
-	private static SuperTacBoard board = new SuperTacBoard(); //init the superBoard
+	private static SuperBoard board = new SuperBoard(); //init the superBoard
 	private static BoardPrinter printer = new BoardPrinter(); //init the printer
 	private static String currentPlayer = "X"; //Sets the current player as X, X always goes first
 	private static int[] currentMinorBoard = {1, 1}; //inits the starting board as the center board
@@ -76,7 +76,7 @@ public class GameEnvironment {
 	 * Returns the current minorBoard in play
 	 * @return current minorBoard in play
 	 */
-	private MinorTacBoard getCurrentMinorBoard() {
+	private MinorBoard getCurrentMinorBoard() {
 		return board.getMinorBoard(currentMinorBoard[0], currentMinorBoard[1]);
 	}
 	
@@ -102,7 +102,7 @@ public class GameEnvironment {
 	 * @return true if the minor tac board hasn't been won
 	 */
 	public boolean checkSuperCoords(int x, int y) {
-		MinorTacBoard minorBoard = board.getMinorBoard(x, y);
+		MinorBoard minorBoard = board.getMinorBoard(x, y);
 		if (minorBoard.isFinished()) {
 			return false;
 		} else {

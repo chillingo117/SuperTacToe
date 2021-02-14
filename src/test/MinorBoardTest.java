@@ -5,18 +5,18 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import tictactoe.MinorTacBoard;
+import tictactoe.MinorBoard;
 
 
 class MinorBoardTest {
 
-	private MinorTacBoard testBoard;
+	private MinorBoard testBoard;
 	private String[] blankRow = {" ", " ", " "};
 	
 	@BeforeEach
 	public void initialise()
 	{
-		testBoard = new MinorTacBoard();
+		testBoard = new MinorBoard();
 	}
 	/**
 	 * The following tests test:

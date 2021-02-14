@@ -11,19 +11,19 @@ public class BoardPrinter {
 	/*
 	 * Decompose converts a superBoard into a nested array of strings. 
 	 */
-	private String[][] decompose(MinorTacBoard[][] superBoard) {
+	private String[][] decompose(MinorBoard[][] superBoard) {
 		String[][] fullDecomp = new String[27][3];
 		int decompNext = 0;
 		
-		MinorTacBoard[] tempSup = superBoard[2];
+		MinorBoard[] tempSup = superBoard[2];
 		//Switches the top and bottom minorBoards to print in the right order
 		//(Top boards need to be printed first)
 		superBoard[2] = superBoard[0];
 		superBoard[0] = tempSup;
 		
 		//Unpack the superBoard into a nested array of strings
-		for (MinorTacBoard[] superRow : superBoard) {
-			for (MinorTacBoard minorBoard : superRow) {
+		for (MinorBoard[] superRow : superBoard) {
+			for (MinorBoard minorBoard : superRow) {
 				String[][] minDecomp = minorBoard.getBoard();
 				//Switches the top and bottom row of each minorBoard in prep for printing
 				String[] temp = minDecomp[2];
@@ -58,8 +58,8 @@ public class BoardPrinter {
 	 * printBoard prints the superBoard to console for player view
 	 * Utilises the decompose function, then prints the board.
 	 */
-	public void printBoard(SuperTacBoard board) {
-		MinorTacBoard[][] superBoard = board.getSuperBoard();
+	public void printBoard(SuperBoard board) {
+		MinorBoard[][] superBoard = board.getSuperBoard();
 		String[][] toPrint = decompose(superBoard);
 		System.out.println(spacer);
 		int index = 0;

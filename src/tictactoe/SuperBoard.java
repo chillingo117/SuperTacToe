@@ -77,7 +77,7 @@ public class SuperBoard {
 
 		win = true;
 		for (int col = 0; col < 3; col++) {
-			MinorTacBoard toCheck = board[col][currentMinorBoard[0]];
+			MinorBoard toCheck = board[col][currentMinorBoard[0]];
 			if (!toCheck.getWinner().equals(player)) {
 				win = false;
 			}
