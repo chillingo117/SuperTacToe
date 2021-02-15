@@ -39,6 +39,12 @@ public class MinorBoard {
 		board[2] = Arrays.copyOf(row2, 3);
 	}
 	
+	public void printBoard() {
+		for(String[] row : this.getBoard()) {
+			System.out.println(Arrays.toString(row));
+		}
+	}
+
 	/**
 	 * Returns whether param coords are valid to play on
 	 */

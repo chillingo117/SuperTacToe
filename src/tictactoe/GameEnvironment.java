@@ -54,7 +54,7 @@ public class GameEnvironment {
 		if (aiCode.equals("M")) {
 			return new MonkeyAi(env);
 		} else if (aiCode.equals("M2")) {
-			return new MonkeyAI2(env, symbol);
+			return new MonkeyAi2(env, symbol);
 		} else {
 			throw new IllegalArgumentException("Invalid aiCode given");
 		}

@@ -7,14 +7,14 @@ import java.util.Random;
 import tictactoe.GameEnvironment;
 import tictactoe.MinorBoard;
 
-;public class MonkeyAI2 extends Ai{
+;public class MonkeyAi2 extends Ai{
     private GameEnvironment env;
 	private Random randomiser = new Random();
     private MinorBoard visionBoard = new MinorBoard();
     private String symbol;
     private String enemySymbol;
 	
-	public MonkeyAI2(GameEnvironment gameEnv, String symbol) {
+	public MonkeyAi2(GameEnvironment gameEnv, String symbol) {
 		env = gameEnv;
         this.symbol = symbol;
 
@@ -53,15 +53,18 @@ import tictactoe.MinorBoard;
                 move[0] = x;
                 move[1] = y;
                 updateBoard();
+                visionBoard.printBoard();
 
                 if (visionBoard.validateCoords(x, y)){
+                    System.out.println("validated");
                     visionBoard.mark(symbol, x, y);
                     winnable = visionBoard.getWinner().equals(symbol);
                     updateBoard();
 
                     if(winnable) {
+                        System.out.println("winnable");
+
                         winningMoves.add(Arrays.copyOf(move, 2));
-                        winnable = true;
                     } else {
                         visionBoard.mark(enemySymbol, x, y);
                         blockable = visionBoard.getWinner().equals(enemySymbol);
@@ -69,9 +72,14 @@ import tictactoe.MinorBoard;
                     }
 
                     if (blockable) {
+                        System.out.println("blockable");
+
                         blockingMoves.add(Arrays.copyOf(move, 2));
-                        blockable = true;
-                    } else {
+                    }
+
+                    if (!winnable && !blockable){
+                        System.out.println("move");
+
                         moves.add(Arrays.copyOf(move, 2));
                     }
                 }   
