@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.BlockAction;
+import javax.xml.stream.events.EndElement;
+
 import tictactoe.GameEnvironment;
 import tictactoe.MinorBoard;
 
@@ -12,10 +15,17 @@ import tictactoe.MinorBoard;
 	private Random randomiser = new Random();
     private MinorBoard visionBoard = new MinorBoard();
     private String symbol;
+    private String enemySymbol;
 	
 	public MonkeyAI2(GameEnvironment gameEnv, String symbol) {
 		env = gameEnv;
         this.symbol = symbol;
+
+        if (this.symbol.equals("O")){
+            enemySymbol = "X";
+        } else {
+            enemySymbol = "O";
+        }
 	}
 
     /**
@@ -49,17 +59,25 @@ import tictactoe.MinorBoard;
 
                 if (visionBoard.validateCoords(x, y)){
                     visionBoard.mark(symbol, x, y);
-                    if (visionBoard.isFinished()){
+                    winnable = visionBoard.getWinner().equals(symbol);
+                    updateBoard();
+
+                    if(winnable) {
+                        winningMoves.add(Arrays.copyOf(move, 2));
+                        winnable = true;
+                    } else {
+                        visionBoard.mark(enemySymbol, x, y);
+                        blockable = visionBoard.getWinner().equals(enemySymbol);
+                        updateBoard();
+                    }
+
+                    if (blockable) {
                         blockingMoves.add(Arrays.copyOf(move, 2));
                         blockable = true;
-                        if (visionBoard.getWinner().equals(symbol)) {
-                            winningMoves.add(Arrays.copyOf(move, 2));
-                            winnable = true;
-                        }
                     } else {
                         moves.add(Arrays.copyOf(move, 2));
                     }
-                }            }
+                }            
         }
         int index;
 
