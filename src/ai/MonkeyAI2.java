@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-import javax.swing.text.html.HTMLDocument.HTMLReader.BlockAction;
-import javax.xml.stream.events.EndElement;
-
 import tictactoe.GameEnvironment;
 import tictactoe.MinorBoard;
 
@@ -77,7 +74,8 @@ import tictactoe.MinorBoard;
                     } else {
                         moves.add(Arrays.copyOf(move, 2));
                     }
-                }            
+                }   
+            }         
         }
         int index;
 
