@@ -34,6 +34,56 @@ public class MonkeyAi2 extends Ai{
         visionBoard.customState(Arrays.copyOf(boardState[2], 3), Arrays.copyOf(boardState[1], 3), Arrays.copyOf(boardState[0], 3), " ", false);
     }
 
+    /**
+     * Prints all identified moves
+     * @param winningMoves Array of winning moves
+     * @param blockingMoves Array of blocking moves
+     * @param moves Array of other moves
+     */
+    private void printIdentifiedMoves(ArrayList<int[]> winningMoves, ArrayList<int[]> blockingMoves, ArrayList<int[]> moves) {
+        System.out.printf("MonkeyAi2 %s identified:", symbol);
+        System.out.println();
+        System.out.print("Winning Moves:");
+        for (int[] coord : winningMoves){
+            System.out.print(Arrays.toString(coord));
+        }
+        System.out.println();
+        System.out.print("Blocking Moves:");
+        for (int[] coord : blockingMoves){
+            System.out.print(Arrays.toString(coord));
+        }
+        System.out.println();
+        System.out.print("Standard Moves:");
+        for (int[] coord : moves){
+            System.out.print(Arrays.toString(coord));
+        }
+        System.out.println();
+    }
+
+    /**
+     * Chooses a random move, prioritising winning moves, then blocking moves
+     * @param winnable boolean for if a winning move is available
+     * @param blockable boolean for if a blocking move is available
+     * @param winningMoves array of winning moves
+     * @param blockingMoves array of blocking moves
+     * @param moves array of all other moves
+     * @return a random best move
+     */
+    private int[] chooseMove(boolean winnable, boolean blockable, ArrayList<int[]> winningMoves, ArrayList<int[]> blockingMoves, ArrayList<int[]> moves) {
+        int[] chosenMove;
+        int index;
+        if(winnable){
+            index = randomiser.nextInt(winningMoves.size());
+            chosenMove = winningMoves.get(index);
+        } else if (blockable) {
+            index = randomiser.nextInt(blockingMoves.size());
+            chosenMove = blockingMoves.get(index);
+        } else {
+            index = randomiser.nextInt(moves.size());
+            chosenMove = moves.get(index);
+        }
+        return chosenMove;
+    }
 
 	@Override
 	public int[] takeTurn() {
@@ -78,39 +128,11 @@ public class MonkeyAi2 extends Ai{
                 }   
             }         
         }
-        int index;
 
-        System.out.printf("MonkeyAi2 %s identified:", symbol);
-        System.out.println();
-        System.out.print("Winning Moves:");
-        for (int[] coord : winningMoves){
-            System.out.print(Arrays.toString(coord));
-        }
-        System.out.println();
-        System.out.print("Blocking Moves:");
-        for (int[] coord : blockingMoves){
-            System.out.print(Arrays.toString(coord));
-        }
-        System.out.println();
-        System.out.print("Standard Moves:");
-        for (int[] coord : moves){
-            System.out.print(Arrays.toString(coord));
-        }
-        System.out.println();
+        printIdentifiedMoves(winningMoves, blockingMoves, moves);
 
-
-        int[] chosenMove = {-1, -1};
-
-        if(winnable){
-            index = randomiser.nextInt(winningMoves.size());
-            chosenMove = winningMoves.get(index);
-        } else if (blockable) {
-            index = randomiser.nextInt(blockingMoves.size());
-            chosenMove = blockingMoves.get(index);
-        } else {
-            index = randomiser.nextInt(moves.size());
-            chosenMove = moves.get(index);
-        }
+        int[] chosenMove;
+        chosenMove = chooseMove(winnable, blockable, winningMoves, blockingMoves, moves);
         return chosenMove;
 	}
 
