@@ -9,6 +9,7 @@ public class MonkeyAi extends Ai{
 	private GameEnvironment env;
 	private String symbol;
 	private Random randomiser = new Random();
+	private String coordFormat = " [%d,%d]";
 	
 	public MonkeyAi(GameEnvironment gameEnv, String symbol) {
 		env = gameEnv;
@@ -21,12 +22,12 @@ public class MonkeyAi extends Ai{
 		int y = randomiser.nextInt(3);
 
 		System.out.printf("Monkey %s tried:", symbol);
-		System.out.printf(" (%d,%d)", x, y);
+		System.out.printf(coordFormat, x, y);
 
 		while(!env.minorIsEmpty(x, y)) {
 			x = randomiser.nextInt(3);
 			y = randomiser.nextInt(3);
-			System.out.printf(" (%d,%d)", x, y);
+			System.out.printf(coordFormat, x, y);
 		}
 		int[] coords = {x, y};
 		System.out.println();
@@ -40,12 +41,12 @@ public class MonkeyAi extends Ai{
 		int x = randomiser.nextInt(3);
 		int y = randomiser.nextInt(3);
 		System.out.printf("Monkey %s tried:", symbol);
-		System.out.printf(" (%d,%d)", x, y);
+		System.out.printf(coordFormat, x, y);
 		while(!env.superIsEmpty(x, y)) {
 
 			x = randomiser.nextInt(3);
 			y = randomiser.nextInt(3);
-			System.out.printf(" (%d,%d)", x, y);
+			System.out.printf(coordFormat, x, y);
 		}
 		int[] coords = {x, y};
 
