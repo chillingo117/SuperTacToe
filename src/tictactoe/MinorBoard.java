@@ -43,7 +43,7 @@ public class MinorBoard {
 	 * Returns whether param coords are valid to play on
 	 */
 	public boolean validateCoords(int x, int y){
-		String symbol = board[x][y];
+		String symbol = board[y][x];
 		return (symbol.equals(" "));
 	}
 
