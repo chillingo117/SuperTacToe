@@ -28,7 +28,7 @@ public class MinorBoard {
 	 */
 	
 	/**
-	 * sets the board to a given state, used for testing
+	 * sets the board to a given state
 	 * @param row2
 	 * @param row1
 	 * @param row0
@@ -39,14 +39,20 @@ public class MinorBoard {
 		board[2] = Arrays.copyOf(row2, 3);
 	}
 	
-	
+	/**
+	 * Returns whether param coords are valid to play on
+	 */
+	public boolean validateCoords(int x, int y){
+		String symbol = board[x][y];
+		return (symbol.equals(" "));
+	}
+
 	/**
 	 * returns the copied state of this board
 	 * @return the copied board state
 	 */
 	public String[][] getBoard() {
-		String[][] boardCopy = Arrays.copyOf(board, 3); 
-		return boardCopy;
+		return Arrays.copyOf(board, 3); 
 	}
 	
 	/**

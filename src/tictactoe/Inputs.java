@@ -85,8 +85,8 @@ public class Inputs {
 		ans = ans.toUpperCase();
 		if (ans.equals("M")) {
 			System.out.println("You have chosen Monkey Ai");
-		} else if (ans.equals("FM")){
-			System.out.println("You have chosen Faster Monkey Ai");
+		} else if (ans.equals("M2")){
+			System.out.println("You have chosen Monkey Ai 2");
 		} else {
 			System.out.println("invalid input");
 			return selectAi();

@@ -35,12 +35,12 @@ public class GameEnvironment {
 		xIsAi = input.askForAi("X");
 		if (xIsAi) {
 			String chosenAi = input.selectAi();
-			aiX = summonAi(chosenAi, this);
+			aiX = summonAi(chosenAi, this, "X");
 		}
 		oIsAi = input.askForAi("O");
 		if (oIsAi) {
 			String chosenAi = input.selectAi();
-			aiO = summonAi(chosenAi, this);
+			aiO = summonAi(chosenAi, this, "O");
 		}
 	}
 
@@ -50,9 +50,11 @@ public class GameEnvironment {
 	 * @param env The game environment that the AI will play on
 	 * @return AI determined by aiCode that plays on env
 	 */
-	private static Ai summonAi(String aiCode, GameEnvironment env) {
+	private static Ai summonAi(String aiCode, GameEnvironment env, String symbol) {
 		if (aiCode.equals("M")) {
 			return new MonkeyAi(env);
+		} else if (aiCode.equals("M2")) {
+			return new MonkeyAI2(env, symbol);
 		} else {
 			throw new IllegalArgumentException("Invalid aiCode given");
 		}
@@ -62,7 +64,7 @@ public class GameEnvironment {
 	 * Returns the current minorBoard in play
 	 * @return current minorBoard in play
 	 */
-	private MinorBoard getCurrentMinorBoard() {
+	public MinorBoard getCurrentMinorBoard() {
 		return board.getMinorBoard(currentMinorBoard[0], currentMinorBoard[1]);
 	}
 	
