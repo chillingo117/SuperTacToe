@@ -1,7 +1,5 @@
 package ai;
 
-import static java.util.Arrays.toString;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -9,7 +7,7 @@ import java.util.Random;
 import tictactoe.GameEnvironment;
 import tictactoe.MinorBoard;
 
-;public class MonkeyAi2 extends Ai{
+public class MonkeyAi2 extends Ai{
     private GameEnvironment env;
 	private Random randomiser = new Random();
     private MinorBoard visionBoard = new MinorBoard();
