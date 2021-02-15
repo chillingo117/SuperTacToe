@@ -1,5 +1,7 @@
 package ai;
 
+import static java.util.Arrays.toString;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -30,7 +32,8 @@ import tictactoe.MinorBoard;
      */
     private void updateBoard() {
         String[][] boardState = env.getCurrentMinorBoard().getBoard();
-        visionBoard.customState(Arrays.copyOf(boardState[2], 3), Arrays.copyOf(boardState[1], 3), Arrays.copyOf(boardState[0], 3));
+
+        visionBoard.customState(Arrays.copyOf(boardState[2], 3), Arrays.copyOf(boardState[1], 3), Arrays.copyOf(boardState[0], 3), " ", false);
     }
 
 
@@ -53,32 +56,24 @@ import tictactoe.MinorBoard;
                 move[0] = x;
                 move[1] = y;
                 updateBoard();
-                visionBoard.printBoard();
 
                 if (visionBoard.validateCoords(x, y)){
-                    System.out.println("validated");
                     visionBoard.mark(symbol, x, y);
-                    winnable = visionBoard.getWinner().equals(symbol);
-                    updateBoard();
 
-                    if(winnable) {
-                        System.out.println("winnable");
-
+                    if(visionBoard.getWinner().equals(symbol)) {
+                        winnable = true;
                         winningMoves.add(Arrays.copyOf(move, 2));
-                    } else {
-                        visionBoard.mark(enemySymbol, x, y);
-                        blockable = visionBoard.getWinner().equals(enemySymbol);
-                        updateBoard();
                     }
 
-                    if (blockable) {
-                        System.out.println("blockable");
+                    updateBoard();
+                    visionBoard.mark(enemySymbol, x, y);
 
+                    if (visionBoard.getWinner().equals(enemySymbol)) {
+                        blockable = true;
                         blockingMoves.add(Arrays.copyOf(move, 2));
                     }
 
                     if (!winnable && !blockable){
-                        System.out.println("move");
 
                         moves.add(Arrays.copyOf(move, 2));
                     }
@@ -87,17 +82,38 @@ import tictactoe.MinorBoard;
         }
         int index;
 
+        System.out.printf("MonkeyAi2 %s identified:", symbol);
+        System.out.println();
+        System.out.print("Winning Moves:");
+        for (int[] coord : winningMoves){
+            System.out.print(Arrays.toString(coord));
+        }
+        System.out.println();
+        System.out.print("Blocking Moves:");
+        for (int[] coord : blockingMoves){
+            System.out.print(Arrays.toString(coord));
+        }
+        System.out.println();
+        System.out.print("Standard Moves:");
+        for (int[] coord : moves){
+            System.out.print(Arrays.toString(coord));
+        }
+        System.out.println();
+
+
+        int[] chosenMove = {-1, -1};
+
         if(winnable){
             index = randomiser.nextInt(winningMoves.size());
-            return (winningMoves.get(index));
+            chosenMove = winningMoves.get(index);
         } else if (blockable) {
             index = randomiser.nextInt(blockingMoves.size());
-            return (blockingMoves.get(index));
+            chosenMove = blockingMoves.get(index);
         } else {
             index = randomiser.nextInt(moves.size());
-            return (moves.get(index));
+            chosenMove = moves.get(index);
         }
-
+        return chosenMove;
 	}
 
 	@Override

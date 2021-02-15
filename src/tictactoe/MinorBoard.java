@@ -38,7 +38,12 @@ public class MinorBoard {
 		board[1] = Arrays.copyOf(row1, 3);
 		board[2] = Arrays.copyOf(row2, 3);
 	}
-	
+	public void customState(String[] row2, String[] row1, String[] row0, String winner, boolean finished){
+		customState(row2, row1, row0);
+		this.winner = winner;
+		this.finished = finished;
+	}
+
 	public void printBoard() {
 		for(String[] row : this.getBoard()) {
 			System.out.println(Arrays.toString(row));

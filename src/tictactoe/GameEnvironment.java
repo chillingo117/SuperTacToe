@@ -52,7 +52,7 @@ public class GameEnvironment {
 	 */
 	private static Ai summonAi(String aiCode, GameEnvironment env, String symbol) {
 		if (aiCode.equals("M")) {
-			return new MonkeyAi(env);
+			return new MonkeyAi(env, symbol);
 		} else if (aiCode.equals("M2")) {
 			return new MonkeyAi2(env, symbol);
 		} else {
@@ -176,8 +176,8 @@ public class GameEnvironment {
 	 */
 	private void minorHasBeenWon(){
 		if(board.checkWin(currentPlayer, currentMinorBoard)) {
-			gameFinish();
 			winner = getCurrentMinorBoard().getWinner();
+			gameFinish();
 		} else if (board.checkFull()) {
 			gameFinish();
 			winner = "Noone";
