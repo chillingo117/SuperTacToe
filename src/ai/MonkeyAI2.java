@@ -7,6 +7,10 @@ import java.util.Random;
 import tictactoe.GameEnvironment;
 import tictactoe.MinorBoard;
 
+
+/**
+ * A monkey ai that is smart enough to win boards when it can, and blocks enemy lines. Plays randomly otherwise.
+ */
 public class MonkeyAi2 extends Ai{
     private GameEnvironment env;
 	private Random randomiser = new Random();
@@ -66,16 +70,17 @@ public class MonkeyAi2 extends Ai{
      * @param blockable boolean for if a blocking move is available
      * @param winningMoves array of winning moves
      * @param blockingMoves array of blocking moves
-     * @param moves array of all other moves
+     * @param moves array of all moves
      * @return a random best move
      */
-    private int[] chooseMove(boolean winnable, boolean blockable, ArrayList<int[]> winningMoves, ArrayList<int[]> blockingMoves, ArrayList<int[]> moves) {
+    private int[] chooseMove(ArrayList<int[]> winningMoves, ArrayList<int[]> blockingMoves, ArrayList<int[]> moves) {
         int[] chosenMove;
         int index;
-        if(winnable){
+
+        if(!winningMoves.isEmpty()){
             index = randomiser.nextInt(winningMoves.size());
             chosenMove = winningMoves.get(index);
-        } else if (blockable) {
+        } else if (!blockingMoves.isEmpty()) {
             index = randomiser.nextInt(blockingMoves.size());
             chosenMove = blockingMoves.get(index);
         } else {
@@ -84,7 +89,39 @@ public class MonkeyAi2 extends Ai{
         }
         return chosenMove;
     }
+    /**
+     * Adds a move to winning moves if it is a winning move
+     * @param x
+     * @param y
+     * @param winningMoves
+     */
+    private void addToWinningMoves(int x, int y, ArrayList<int[]> winningMoves) {
+        updateBoard();
+        visionBoard.mark(symbol, x, y);
+        int[] move = {x, y};
+        if(visionBoard.getWinner().equals(symbol)) {
+            winningMoves.add(Arrays.copyOf(move, 2));
+        }
+    }
 
+    /**
+     * Adds a move to blocking move if it is a blocking move
+     * @param x
+     * @param y
+     * @param blockingMoves
+     */
+    private void addToBlockingMoves(int x, int y, ArrayList<int[]> blockingMoves){
+        updateBoard();
+        visionBoard.mark(enemySymbol, x, y);
+        int[] move = {x, y};
+        if (visionBoard.getWinner().equals(enemySymbol)) {
+            blockingMoves.add(Arrays.copyOf(move, 2));
+        }
+    }
+
+    /**
+     * Returns the move the AI wants to make
+     */
 	@Override
 	public int[] takeTurn() {
 
@@ -92,13 +129,11 @@ public class MonkeyAi2 extends Ai{
         ArrayList<int[]> blockingMoves = new ArrayList<>();
         ArrayList<int[]> moves = new ArrayList<>();
 
-        Boolean winnable = false;
-        Boolean blockable = false;
-
         int x = -1;
         int y = -1;
         int[] move = {x, y};
 
+        //For all possible moves, check if they are valid, then add them to the appropriate move arraylists
         for (x = 0; x < 3; x++) {
             for (y= 0; y < 3; y++) {
                 move[0] = x;
@@ -106,25 +141,9 @@ public class MonkeyAi2 extends Ai{
                 updateBoard();
 
                 if (visionBoard.validateCoords(x, y)){
-                    visionBoard.mark(symbol, x, y);
-
-                    if(visionBoard.getWinner().equals(symbol)) {
-                        winnable = true;
-                        winningMoves.add(Arrays.copyOf(move, 2));
-                    }
-
-                    updateBoard();
-                    visionBoard.mark(enemySymbol, x, y);
-
-                    if (visionBoard.getWinner().equals(enemySymbol)) {
-                        blockable = true;
-                        blockingMoves.add(Arrays.copyOf(move, 2));
-                    }
-
-                    if (!winnable && !blockable){
-
-                        moves.add(Arrays.copyOf(move, 2));
-                    }
+                    addToWinningMoves(x, y, winningMoves);
+                    addToBlockingMoves(x, y, blockingMoves);
+                    moves.add(Arrays.copyOf(move, 2));
                 }   
             }         
         }
@@ -132,7 +151,7 @@ public class MonkeyAi2 extends Ai{
         printIdentifiedMoves(winningMoves, blockingMoves, moves);
 
         int[] chosenMove;
-        chosenMove = chooseMove(winnable, blockable, winningMoves, blockingMoves, moves);
+        chosenMove = chooseMove(winningMoves, blockingMoves, moves);
         return chosenMove;
 	}
 
