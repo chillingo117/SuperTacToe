@@ -23,7 +23,7 @@ import tictactoe.MinorBoard;
      */
     private void updateBoard() {
         String[][] boardState = env.getCurrentMinorBoard().getBoard();
-        visionBoard.customState(boardState[2], boardState[1], boardState[0]);
+        visionBoard.customState(Arrays.copyOf(boardState[2], 3), Arrays.copyOf(boardState[1], 3), Arrays.copyOf(boardState[0], 3));
     }
 
 
@@ -85,8 +85,6 @@ import tictactoe.MinorBoard;
 		int y = randomiser.nextInt(3);
 
 		while(!env.superIsEmpty(x, y)) {
-			System.out.printf("%d,%d", x, y);
-
 			x = randomiser.nextInt(3);
 			y = randomiser.nextInt(3);
 		}
