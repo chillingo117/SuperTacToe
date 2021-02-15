@@ -27,26 +27,6 @@ import tictactoe.MinorBoard;
     }
 
 
-    private void checkMove(ArrayList<int[]> winningMoves, ArrayList<int[]> blockingMoves, ArrayList<int[]> moves, Boolean winnable, Boolean blockable, int x, int y){
-        updateBoard();
-
-        int[] move = {x, y};
-
-        if (visionBoard.validateCoords(x, y)){
-            visionBoard.mark(symbol, x, y);
-            if (visionBoard.isFinished()){
-                blockingMoves.add(Arrays.copyOf(move, 2));
-                blockable = true;
-                if (visionBoard.getWinner().equals(symbol)) {
-                    winningMoves.add(Arrays.copyOf(move, 2));
-                    winnable = true;
-                }
-            } else {
-                moves.add(Arrays.copyOf(move, 2));
-            }
-        }
-    }
-
 	@Override
 	public int[] takeTurn() {
 
@@ -59,10 +39,27 @@ import tictactoe.MinorBoard;
 
         int x = -1;
         int y = -1;
+        int[] move = {x, y};
+
         for (x = 0; x < 3; x++) {
             for (y= 0; y < 3; y++) {
-                checkMove(winningMoves, blockingMoves, moves, winnable, blockable, x, y);
-            }
+                move[0] = x;
+                move[1] = y;
+                updateBoard();
+
+                if (visionBoard.validateCoords(x, y)){
+                    visionBoard.mark(symbol, x, y);
+                    if (visionBoard.isFinished()){
+                        blockingMoves.add(Arrays.copyOf(move, 2));
+                        blockable = true;
+                        if (visionBoard.getWinner().equals(symbol)) {
+                            winningMoves.add(Arrays.copyOf(move, 2));
+                            winnable = true;
+                        }
+                    } else {
+                        moves.add(Arrays.copyOf(move, 2));
+                    }
+                }            }
         }
         int index;
 
