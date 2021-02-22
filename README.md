@@ -27,3 +27,21 @@ This project runs a Super Tac Toe game as per the following rules and specificat
   - Implement a minmax AI
     - Allow different heuristics for the minmax AI
   - Implement a Monte-Carlo tree-search AI
+
+To Play:
+ - Open a terminal (This project was done using Visual Studio Code)
+ - Run MainClass.java
+ - Follow the prompts on the terminal
+   - First prompt will ask if X is an AI. Input a Y for yes and N for no.
+     - If you chose yes, you will be prompted to choose an AI. Input the AI code to choose an AI
+   - Next, you will be asked if O is an AI. Input a Y for yes and N for no.
+     - If you chose yes, you will be prompted to choose an AI. 
+ After this, the game will start. It will repeatedly progress through each player's turns until the game is finished. 
+ During a players turn:
+  - If the player is an AI, the AI will automatically take its turn. The AI may produce some outputs that display its thinking process.
+  - If the player is not an AI, it will prompt the player to input some coordinates.
+    - The coordinates start at 0, EG [0,0] is bottom left, [2,2] is top right, and [0,1] is middle left.
+    - If the player is forced to play on a finished square, they will first be prompted to select a minor board to play on.
+    - The player will be prompted to select which spot they wish to mark. 
+ Finally, once the game is finished, the overall board will be displayed a final time, and the winner displayed.
+ 
